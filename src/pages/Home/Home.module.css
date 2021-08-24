@@ -8,10 +8,10 @@
 .cardItem {
   display: flex;
   flex: 1;
-  background-color: #ffffff;
+  background-color: aliceblue;
   border-radius: 0.5rem;
   padding: 1rem;
-  box-shadow: 0px 0px 10px 3px #ffffff;
+  box-shadow: 0px 0px 10px 3px aliceblue;
 }
 
 .cardItem>div {
@@ -21,4 +21,18 @@
   align-items: center;
   justify-content: space-evenly;
   gap: 1rem;
+}
+
+.pageWrapper {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5rem 0 30rem 0;
+}
+
+h3 {
+  font-size: 4rem;
+  color: aliceblue;
 }
