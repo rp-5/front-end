@@ -5,6 +5,8 @@
   flex: 1;
   height: 100vh;
   font-family: 'Raleway', sans-serif;
+  justify-content: center;
+  align-items: center;
 }
 
 body {

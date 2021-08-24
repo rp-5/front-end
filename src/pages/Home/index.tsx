@@ -11,8 +11,16 @@ export default function Home() {
         <Link to="/amostra/new">
           <button className={styles.cardItem}>
             <div>
-              <Icon name="file-plus" />
+              <Icon name="plus-circle" />
               <p>Adicionar amostra</p>
+            </div>
+          </button>
+        </Link>
+        <Link to="/amostra/new">
+          <button className={styles.cardItem}>
+            <div>
+              <Icon name="file-plus" />
+              <p>Enviar arquivo</p>
             </div>
           </button>
         </Link>

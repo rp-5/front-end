@@ -1,8 +1,9 @@
 .cardWrapper {
   display: grid;
-  width: 100%;
   justify-items: center;
   align-items: center;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
 }
 
 .cardItem {
