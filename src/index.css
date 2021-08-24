@@ -1,10 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;500;600;700;800;900&display=swap');
 #root {
   background-color: rgb(41, 45, 62);
   display: flex;
   flex: 1;
   height: 100vh;
+  font-family: 'Raleway', sans-serif;
 }
 
 body {
   margin: 0 !important;
+}
+
+p {
+  margin: 0 !important;
+}
+
+button {
+  appearance: unset;
+  box-sizing: unset;
+  border-style: unset;
+  border-width: 0;
+  font: unset;
+  cursor: pointer;
+  -webkit-transition: opacity .3s;
+  -moz-transition: opacity .3s;
+  transition: opacity .3s;
+}
+
+button:hover {
+  opacity: .7;
 }
