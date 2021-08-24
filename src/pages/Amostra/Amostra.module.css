@@ -1,11 +1,14 @@
 .wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: 1rem;
   background-color: aliceblue;
   border-radius: 0.5rem;
   box-shadow: 0px 0px 10px 3px aliceblue;
+  overflow-y: auto;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 }
 
 .paper {
