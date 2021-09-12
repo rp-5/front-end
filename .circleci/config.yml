@@ -18,7 +18,7 @@ jobs:
           command: yarn test --passWithNoTests
       - run:
           name: Yarn run
-          command: yarn run
+          command: yarn start
 workflows:
   run-and-test:
     jobs:
