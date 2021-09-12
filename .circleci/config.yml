@@ -11,6 +11,9 @@ jobs:
           install-npm: false
       - checkout
       - run:
+          name: Yarn install
+          command: yarn install
+      - run:
           name: Yarn test
           command: yarn test
 workflows:
