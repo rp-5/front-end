@@ -15,7 +15,10 @@ jobs:
           command: yarn install
       - run:
           name: Yarn test
-          command: yarn test
+          command: yarn test --passWithNoTests
+      - run:
+          name: Yarn run
+          command: yarn run
 workflows:
   run-and-test:
     jobs:
