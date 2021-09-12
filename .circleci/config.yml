@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  typescript: vidsy/typescript@1.2.0
+
 workflows:
     typescript-build:
       jobs:
