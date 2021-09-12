@@ -20,6 +20,6 @@ jobs:
           name: Yarn build
           command: yarn build
 workflows:
-  run-and-test:
+  Install-Test-Build:
     jobs:
       - Test
