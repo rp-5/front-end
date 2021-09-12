@@ -7,10 +7,6 @@ jobs:
 
     steps:
       - checkout
-      - run:
-        - name: Update node to v8.11.1
-        - shell: /bin/sh
-        - command: nvm install v8.11.1
 
       - restore_cache:
           keys:
