@@ -6,4 +6,5 @@ orbs:
 workflows:
     typescript-build:
       jobs:
-        - typescript/build
+        - typescript/build:
+            node-modules-cache-key: 'node_key'
