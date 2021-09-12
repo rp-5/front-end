@@ -6,7 +6,9 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
-      - node/install-yarn
+      - node/install:
+          install-yarn: true 
+          install-npm: false
       - run:
           name: Yarn test
           command: yarn test
