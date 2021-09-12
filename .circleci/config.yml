@@ -9,6 +9,7 @@ jobs:
       - node/install:
           install-yarn: true 
           install-npm: false
+      - checkout
       - run:
           name: Yarn test
           command: yarn test
