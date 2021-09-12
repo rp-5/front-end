@@ -7,4 +7,4 @@ workflows:
     typescript-build:
       jobs:
         - typescript/build:
-            node-modules-cache-key: 'node_key'
+            node-modules-cache-key: 'node_modules_key'
