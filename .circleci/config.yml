@@ -1,8 +1,16 @@
 version: 2.1
 orbs:
-  yarn: 'itinerisltd/yarn@2.1.1'
+  node: circleci/node@4.7.0
+jobs:
+  Test:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - node/install-yarn
+      - run:
+          name: Yarn test
+          command: yarn test
 workflows:
-  test:
+  run-and-test:
     jobs:
-      - yarn/test-if-changed:
-          paths: src/
+      - Test
