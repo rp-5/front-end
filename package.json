@@ -34,7 +34,7 @@
       "react-app/jest"
     ]
   },
-  "testPathIgnorePatterns": "./node_modules/",
+  "testPathIgnorePatterns": ["<rootDir>/node_modules/"],
   "browserslist": {
     "production": [
       ">0.2%",
