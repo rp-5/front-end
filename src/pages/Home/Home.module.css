@@ -37,3 +37,18 @@ h3 {
   font-size: 4rem;
   color: aliceblue;
 }
+
+.hidden {
+  display: none !important;
+}
+
+label.cardItem {
+  cursor: pointer;
+  -webkit-transition: opacity .3s;
+  -moz-transition: opacity .3s;
+  transition: opacity .3s;
+}
+
+label.cardItem:hover {
+  opacity: .7;
+}
