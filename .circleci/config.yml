@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@4.7.0
+  heroku: circleci/heroku@1.2.6
 jobs:
   Test:
     docker:
@@ -16,10 +17,23 @@ jobs:
       - run:
           name: Yarn test
           command: yarn test --passWithNoTests
-      - run:
-          name: Yarn build
-          command: yarn build
+
+  Deploy-in-develop:
+    executor: heroku/default
+    environment:
+      HEROKU_APP_NAME: "front-develop"
+    steps:
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git
 workflows:
-  Install-Test-Build:
+  Install-Test-Build-Deploy:
     jobs:
       - Test
+      - Deploy-in-develop:
+          requires:
+            - Test
+          filters:
+            branches:
+              only: develop
+              ignore: /pull\/.*/
