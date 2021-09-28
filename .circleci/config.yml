@@ -17,6 +17,9 @@ jobs:
       - run:
           name: Yarn test
           command: yarn test --passWithNoTests
+      - run:
+          name: Yarn build
+          command: yarn build
 
   Deploy-in-develop:
     executor: heroku/default
@@ -29,10 +32,11 @@ jobs:
 workflows:
   Install-Test-Build-Deploy:
     jobs:
-      - Test
+      - Test:
+          filters:
+            branches:
+              ignore: develop
       - Deploy-in-develop:
-          requires:
-            - Test
           filters:
             branches:
               only: develop
