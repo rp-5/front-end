@@ -12,9 +12,10 @@ import { initialValues } from './formik';
 export const NewAmostra = () => {
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: validationSchema,
+    // initialTouched: initialValues,
+    // validationSchema: validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      console.log(JSON.stringify(values, null, 2))
     },
   });
 
@@ -47,76 +48,70 @@ export const NewAmostra = () => {
             </Typography>
             <form onSubmit={formik.handleSubmit} className={styles.form} noValidate>
               <Grid container spacing={2}>
-                {/* Cachorro */}
                 <Grid item xs={12} sm={12}>
                   <Typography component="h1" variant="h6">
                     Dados do Cão
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="dogName"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="dogName"
-                    label="Nome"
-                    autoFocus
-                    value={formik.values.dogName}
+                  <TextField name="proprietario.caes[0].nome" variant="outlined" required fullWidth label="Nome"
+                    value={formik.values.proprietario?.caes[0].nome}
                     onChange={formik.handleChange}
-                    error={formik.touched.dogName && Boolean(formik.errors.dogName)}
-                    helperText={formik.touched.dogName && formik.errors.dogName}
+                    //@ts-expect-error
+                    error={formik.touched.proprietario?.caes[0] && Boolean(formik.errors.proprietario?.caes[0]?.nome)}
+                    //@ts-expect-error
+                    helperText={formik.touched.proprietario?.caes[0].nome && formik.errors.proprietario?.caes[0]?.nome}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="dogRace"
-                    label="Raça"
-                    name="dogRace"
-                    value={formik.values.dogRace}
+                  <TextField name="proprietario.caes[0].raca" variant="outlined" required fullWidth label="Raça"
+                    value={formik.values.proprietario?.caes[0].raca}
                     onChange={formik.handleChange}
-                    error={formik.touched.dogRace && Boolean(formik.errors.dogRace)}
-                    helperText={formik.touched.dogRace && formik.errors.dogRace}
+                    //@ts-expect-error
+                    error={formik.touched.proprietario?.caes[0].raca && Boolean(formik.errors.proprietario?.caes[0].raca)}
+                    //@ts-expect-error
+                    helperText={formik.touched.proprietario?.caes[0].raca && formik.errors.proprietario?.caes[0].raca}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                  <TextField
-                    type="number"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="dogAge"
-                    label="Idade"
-                    name="dogAge"
-                    value={formik.values.dogAge}
+                  <TextField type="number" variant="outlined" required fullWidth label="Idade" name="proprietario?.caes[0].idade"
+                    value={formik.values.proprietario?.caes[0].idade}
                     onChange={formik.handleChange}
-                    error={formik.touched.dogAge && Boolean(formik.errors.dogAge)}
-                    helperText={formik.touched.dogAge && formik.errors.dogAge}
+                    //@ts-expect-error
+                    error={formik.touched.proprietario?.caes[0].idade && Boolean(formik.errors.proprietario?.caes[0].idade)}
+                    //@ts-expect-error
+                    helperText={formik.touched.proprietario?.caes[0].idade && formik.errors.proprietario?.caes[0].idade}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                  <FormControl component="fieldset" error={formik.touched.dogGender && Boolean(formik.errors.dogGender)}>
+                  <FormControl component="fieldset"
+                    //@ts-expect-error
+                    error={formik.touched.proprietario?.caes[0].sexo && Boolean(formik.errors.proprietario?.caes[0].sexo)}
+                  >
                     <FormLabel component="legend">Gênero</FormLabel>
-                    <RadioGroup row aria-label="gender" name="dogGender" value={formik.values.dogGender}
+                    <RadioGroup row aria-label="gender" name="proprietario?.caes[0].sexo" value={formik.values.proprietario?.caes[0].sexo}
                       onChange={formik.handleChange}>
-                      <FormControlLabel value="female" control={<Radio />} label="Fêmea" />
-                      <FormControlLabel value="male" control={<Radio />} label="Macho" />
+                      <FormControlLabel value="F" control={<Radio />} label="Fêmea" />
+                      <FormControlLabel value="M" control={<Radio />} label="Macho" />
                     </RadioGroup>
-                    <FormHelperText>{formik.touched.dogGender && formik.errors.dogGender}</FormHelperText>
+                    //@ts-expect-error
+                    <FormHelperText>{
+                      //@ts-expect-error
+                      formik.touched.proprietario?.caes[0].sexo && formik.errors.proprietario?.caes[0].sexo
+                    }</FormHelperText>
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                  <FormControl component="fieldset" error={formik.touched.dogIsVaccinated && Boolean(formik.errors.dogIsVaccinated)}>
+                  <FormControl component="fieldset"
+                    //@ts-expect-error
+                    error={formik.touched.proprietario?.caes[0].vacina && Boolean(formik.errors.proprietario?.caes[0].vacina)}
+                  >
                     <FormLabel component="legend">É vacinado?</FormLabel>
                     <FormControlLabel
                       control={
                         <Checkbox
                           onChange={formik.handleChange}
-                          name="dogIsVaccinated"
-                          id="dogIsVaccinated"
+                          name="proprietario?.caes[0].vacina"
                           color="primary"
                         />
                       }
@@ -125,14 +120,16 @@ export const NewAmostra = () => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                  <FormControl component="fieldset" error={formik.touched.dogUsesCollar && Boolean(formik.errors.dogUsesCollar)}>
+                  <FormControl component="fieldset"
+                    //@ts-expect-error
+                    error={formik.touched.proprietario?.caes[0].usaColeira && Boolean(formik.errors.proprietario?.caes[0].usaColeira)}
+                  >
                     <FormLabel component="legend">Usa coleira para mosquito palha?</FormLabel>
                     <FormControlLabel
                       control={
                         <Checkbox
                           onChange={formik.handleChange}
-                          name="dogUsesCollar"
-                          id="dogUsesCollar"
+                          name="proprietario?.caes[0].usaColeira"
                           color="primary"
                         />
                       }
@@ -141,28 +138,26 @@ export const NewAmostra = () => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="dogColor"
-                    label="Cor"
-                    name="dogColor"
-                    value={formik.values.dogColor}
+                  <TextField variant="outlined" required fullWidth label="Cor" name="proprietario?.caes[0].cor"
+                    value={formik.values.proprietario?.caes[0].cor}
                     onChange={formik.handleChange}
-                    error={formik.touched.dogColor && Boolean(formik.errors.dogColor)}
-                    helperText={formik.touched.dogColor && formik.errors.dogColor}
+                    //@ts-expect-error
+                    error={formik.touched.proprietario?.caes[0].cor && Boolean(formik.errors.proprietario?.caes[0].cor)}
+                    //@ts-expect-error
+                    helperText={formik.touched.proprietario?.caes[0].cor && formik.errors.proprietario?.caes[0].cor}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                  <FormControl variant="outlined" fullWidth error={formik.touched.dogHair && Boolean(formik.errors.dogHair)}>
-                    <InputLabel id="dogHairLabel">Tipo de Pelo *</InputLabel>
+                  <FormControl variant="outlined" fullWidth
+                    // @ts-expect-error
+                    error={formik.touched.proprietario?.caes[0].pelo && Boolean(formik.errors.proprietario?.caes[0].pelo)}
+                  >
+                    <InputLabel id="proprietario?.caes[0].peloLabel">Tipo de Pelo *</InputLabel>
                     <Select
                       required
-                      labelId="dogHairLabel"
-                      id="dogHair"
-                      name="dogHair"
-                      value={formik.values.dogHair}
+                      labelId="proprietario?.caes[0].peloLabel"
+                      name="proprietario?.caes[0].pelo"
+                      value={formik.values.proprietario?.caes[0].pelo}
                       onChange={formik.handleChange}
                       label="Tipo de Pelo"
                     >
@@ -170,36 +165,46 @@ export const NewAmostra = () => {
                       <MenuItem value={'Médio'}>Médio</MenuItem>
                       <MenuItem value={'Longo'}>Longo</MenuItem>
                     </Select>
-                    <FormHelperText>{formik.touched.dogHair && formik.errors.dogHair}</FormHelperText>
+                    <FormHelperText>{
+                      // @ts-expect-error
+                      formik.touched.proprietario?.caes[0].pelo && formik.errors.proprietario?.caes[0].pelo
+                    }</FormHelperText>
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                  <FormControl variant="outlined" fullWidth error={formik.touched.dogEnvironment && Boolean(formik.errors.dogEnvironment)}>
-                    <InputLabel id="dogEnvironmentLabel">Ambiente da casa *</InputLabel>
+                  <FormControl variant="outlined" fullWidth
+                    // @ts-expect-error
+                    error={formik.touched.proprietario?.caes[0].ambiente && Boolean(formik.errors.proprietario?.caes[0].ambiente)}
+                  >
+                    <InputLabel id="proprietario?.caes[0].ambienteLabel">Ambiente da casa *</InputLabel>
                     <Select
                       required
-                      labelId="dogEnvironmentLabel"
-                      id="dogEnvironment"
-                      name="dogEnvironment"
-                      value={formik.values.dogEnvironment}
+                      labelId="proprietario?.caes[0].ambienteLabel"
+                      name="proprietario?.caes[0].ambiente"
+                      value={formik.values.proprietario?.caes[0].ambiente}
                       onChange={formik.handleChange}
                       label="Ambiente da casa *"
                     >
                       <MenuItem value={'Interno'}>Interno</MenuItem>
                       <MenuItem value={'Externo'}>Externo</MenuItem>
                     </Select>
-                    <FormHelperText>{formik.touched.dogEnvironment && formik.errors.dogEnvironment}</FormHelperText>
+                    <FormHelperText>{
+                      // @ts-expect-error
+                      formik.touched.proprietario?.caes[0].ambiente && formik.errors.proprietario?.caes[0].ambiente
+                    }</FormHelperText>
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                  <FormControl component="fieldset" error={formik.touched.dogHasContacts && Boolean(formik.errors.dogHasContacts)}>
+                  <FormControl component="fieldset"
+                    // @ts-expect-error
+                    error={formik.touched.proprietario?.caes[0].temContato && Boolean(formik.errors.proprietario?.caes[0].temContato)}
+                  >
                     <FormLabel component="legend">Possui contato com outros animais?</FormLabel>
                     <FormControlLabel
                       control={
                         <Checkbox
                           onChange={formik.handleChange}
-                          name="dogHasContacts"
-                          id="dogHasContacts"
+                          name="proprietario?.caes[0].temContato"
                           color="primary"
                         />
                       }
@@ -207,7 +212,6 @@ export const NewAmostra = () => {
                     />
                   </FormControl>
                 </Grid>
-                {/* Proprietário */}
                 <Grid item xs={12} sm={12}>
                   <Typography component="h1" variant="h6">
                     Dados do Proprietário
@@ -221,10 +225,10 @@ export const NewAmostra = () => {
                     id="ownerName"
                     label="Nome"
                     name="ownerName"
-                    value={formik.values.ownerName}
+                    value={formik.values.proprietario.nome}
                     onChange={formik.handleChange}
-                    error={formik.touched.ownerName && Boolean(formik.errors.ownerName)}
-                    helperText={formik.touched.ownerName && formik.errors.ownerName}
+                    error={formik.touched.proprietario?.nome && Boolean(formik.errors.proprietario?.nome)}
+                    helperText={formik.touched.proprietario?.nome && formik.errors.proprietario?.nome}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={6}>
@@ -340,25 +344,11 @@ export const NewAmostra = () => {
                     </Grid>
                   </>
                 ))}
-                {/* Amostra */}
                 <Grid item xs={12} sm={12}>
                   <Typography component="h1" variant="h6">
                     Dados da amostra
                   </Typography>
                 </Grid>
-                {/* <Grid item xs={12} sm={6} lg={3}>
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    id="sampleN"
-                    label="Valor N"
-                    name="sampleN"
-                    value={formik.values.sampleN}
-                    onChange={formik.handleChange}
-                    error={formik.touched.sampleN && Boolean(formik.errors.sampleN)}
-                    helperText={formik.touched.sampleN && formik.errors.sampleN}
-                  />
-                </Grid> */}
                 <Grid item xs={12} sm={6} lg={3}>
                   <TextField
                     variant="outlined"
@@ -421,7 +411,6 @@ export const NewAmostra = () => {
                     />
                   </FormControl>
                 </Grid>
-                {/* Sintomas */}
                 <Grid item xs={12} sm={12}>
                   <Typography component="h1" variant="h6">
                     Dados de Sintomas
@@ -470,7 +459,6 @@ export const NewAmostra = () => {
                     <Grid container sm={12} lg={12}></Grid>
                   </>
                 ))}
-                {/* Exames */}
                 <Grid item xs={12} sm={12}>
                   <Typography component="h1" variant="h6">
                     Dados de Exames
