@@ -140,6 +140,73 @@ export const NewAmostra = () => {
                     />
                   </FormControl>
                 </Grid>
+                <Grid item xs={12} sm={6} lg={3}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="dogColor"
+                    label="Cor"
+                    name="dogColor"
+                    value={formik.values.dogColor}
+                    onChange={formik.handleChange}
+                    error={formik.touched.dogColor && Boolean(formik.errors.dogColor)}
+                    helperText={formik.touched.dogColor && formik.errors.dogColor}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} lg={3}>
+                  <FormControl variant="outlined" fullWidth error={formik.touched.dogHair && Boolean(formik.errors.dogHair)}>
+                    <InputLabel id="dogHairLabel">Tipo de Pelo *</InputLabel>
+                    <Select
+                      required
+                      labelId="dogHairLabel"
+                      id="dogHair"
+                      name="dogHair"
+                      value={formik.values.dogHair}
+                      onChange={formik.handleChange}
+                      label="Tipo de Pelo"
+                    >
+                      <MenuItem value={'Curto'}>Curto</MenuItem>
+                      <MenuItem value={'Médio'}>Médio</MenuItem>
+                      <MenuItem value={'Longo'}>Longo</MenuItem>
+                    </Select>
+                    <FormHelperText>{formik.touched.dogHair && formik.errors.dogHair}</FormHelperText>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} lg={3}>
+                  <FormControl variant="outlined" fullWidth error={formik.touched.dogEnvironment && Boolean(formik.errors.dogEnvironment)}>
+                    <InputLabel id="dogEnvironmentLabel">Ambiente da casa *</InputLabel>
+                    <Select
+                      required
+                      labelId="dogEnvironmentLabel"
+                      id="dogEnvironment"
+                      name="dogEnvironment"
+                      value={formik.values.dogEnvironment}
+                      onChange={formik.handleChange}
+                      label="Ambiente da casa *"
+                    >
+                      <MenuItem value={'Interno'}>Interno</MenuItem>
+                      <MenuItem value={'Externo'}>Externo</MenuItem>
+                    </Select>
+                    <FormHelperText>{formik.touched.dogEnvironment && formik.errors.dogEnvironment}</FormHelperText>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} lg={3}>
+                  <FormControl component="fieldset" error={formik.touched.dogHasContacts && Boolean(formik.errors.dogHasContacts)}>
+                    <FormLabel component="legend">Possui contato com outros animais?</FormLabel>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          onChange={formik.handleChange}
+                          name="dogHasContacts"
+                          id="dogHasContacts"
+                          color="primary"
+                        />
+                      }
+                      label="Sim"
+                    />
+                  </FormControl>
+                </Grid>
                 {/* Proprietário */}
                 <Grid item xs={12} sm={12}>
                   <Typography component="h1" variant="h6">
@@ -158,6 +225,20 @@ export const NewAmostra = () => {
                     onChange={formik.handleChange}
                     error={formik.touched.ownerName && Boolean(formik.errors.ownerName)}
                     helperText={formik.touched.ownerName && formik.errors.ownerName}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} lg={6}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="ownerPhone"
+                    label="Telefone"
+                    name="ownerPhone"
+                    value={formik.values.ownerPhone}
+                    onChange={formik.handleChange}
+                    error={formik.touched.ownerPhone && Boolean(formik.errors.ownerPhone)}
+                    helperText={formik.touched.ownerPhone && formik.errors.ownerPhone}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12}>
@@ -213,7 +294,7 @@ export const NewAmostra = () => {
                     </Grid>
                     <Grid item xs={12} sm={6} lg={3}>
                       <FormControl variant="outlined" fullWidth error={formik.touched.locationArea && Boolean(formik.errors.locationArea)}>
-                        <InputLabel id="locationAreaLabel">Área</InputLabel>
+                        <InputLabel id="locationAreaLabel">Área *</InputLabel>
                         <Select
                           required
                           labelId="locationAreaLabel"
@@ -265,7 +346,7 @@ export const NewAmostra = () => {
                     Dados da amostra
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} lg={3}>
+                {/* <Grid item xs={12} sm={6} lg={3}>
                   <TextField
                     variant="outlined"
                     fullWidth
@@ -277,7 +358,7 @@ export const NewAmostra = () => {
                     error={formik.touched.sampleN && Boolean(formik.errors.sampleN)}
                     helperText={formik.touched.sampleN && formik.errors.sampleN}
                   />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12} sm={6} lg={3}>
                   <TextField
                     variant="outlined"
@@ -365,19 +446,27 @@ export const NewAmostra = () => {
                       />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={3}>
-                      <TextField
-                        type="number"
-                        variant="outlined"
-                        fullWidth
-                        required
-                        id="sintIntensity"
-                        label="Intensidade"
-                        name="sintIntensity"
-                        value={formik.values.sintIntensity}
-                        onChange={formik.handleChange}
-                        error={formik.touched.sintIntensity && Boolean(formik.errors.sintIntensity)}
-                        helperText={formik.touched.sintIntensity && formik.errors.sintIntensity}
-                      />
+                      <FormControl variant="outlined" fullWidth error={formik.touched.sintIntensity && Boolean(formik.errors.sintIntensity)}>
+                        <InputLabel id="sintIntensityLabel">Intensidade</InputLabel>
+                        <Select
+                          required
+                          labelId="sintIntensityLabel"
+                          id="sintIntensity"
+                          name="sintIntensity"
+                          value={formik.values.sintIntensity}
+                          onChange={formik.handleChange}
+                          label="Intensidade"
+                        >
+                          <MenuItem value={'N/A'}>Não se aplica</MenuItem>
+                          <MenuItem value={'0'}>0</MenuItem>
+                          <MenuItem value={'1'}>1</MenuItem>
+                          <MenuItem value={'2'}>2</MenuItem>
+                          <MenuItem value={'3'}>3</MenuItem>
+                          <MenuItem value={'5'}>5</MenuItem>
+                          <MenuItem value={'6'}>6</MenuItem>
+                        </Select>
+                        <FormHelperText>{formik.touched.sintIntensity && formik.errors.sintIntensity}</FormHelperText>
+                      </FormControl>
                     </Grid>
                     <Grid container sm={12} lg={12}></Grid>
                   </>
