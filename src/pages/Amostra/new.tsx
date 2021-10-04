@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { DatePicker, KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { FieldArray, FormikProvider, useFormik } from 'formik';
+import { Field, FieldArray, FormikProvider, useFormik } from 'formik';
 import Button from '@material-ui/core/Button';
 import styles from './Amostra.module.css'
 import { TextField, Container, CssBaseline, Avatar, Typography, Grid, ThemeProvider, Checkbox, FormControlLabel, FormLabel, RadioGroup, Radio, FormHelperText, FormControl, InputLabel, Select, MenuItem, IconButton } from '@material-ui/core';
@@ -14,14 +14,6 @@ import { initialValues } from './formik';
 export const NewAmostra = () => {
   const [lat, setLat] = useState(0);
   const [long, setLong] = useState(0);
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      setLat(pos.coords.latitude)
-      setLong(pos.coords.longitude)
-      formik.setFieldValue('proprietario.localizacoes[0].latitude', pos.coords.latitude)
-      formik.setFieldValue('proprietario.localizacoes[0].longitude', pos.coords.longitude)
-    })
-  }, [])
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -30,6 +22,16 @@ export const NewAmostra = () => {
       console.log(JSON.stringify(values, null, 2))
     },
   });
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      setLat(pos.coords.latitude)
+      setLong(pos.coords.longitude)
+      formik.setFieldValue('proprietario.localizacoes[0].latitude', pos.coords.latitude)
+      formik.setFieldValue('proprietario.localizacoes[0].longitude', pos.coords.longitude)
+    })
+  }, [formik])
+
   return (
     <div className={styles.wrapper}>
       <ThemeProvider theme={theme}>
@@ -235,7 +237,7 @@ export const NewAmostra = () => {
                         <Typography component="h1" variant="h6">
                           Endereço do Proprietário
                           &nbsp;&nbsp;
-                          <IconButton color="secondary" onClick={() => push({ latitude: lat, longitude: long })}>
+                          <IconButton color="secondary" onClick={() => push({ latitude: lat, longitude: long, area: 'Urbana' })}>
                             <Add />
                           </IconButton>
                           &nbsp;&nbsp;
@@ -252,9 +254,9 @@ export const NewAmostra = () => {
                               value={formik.values.proprietario.localizacoes[index].bairro}
                               onChange={formik.handleChange}
                               // @ts-expect-error
-                              error={formik.touched.proprietario?.localizacoes[index].bairro && Boolean(formik.errors.proprietario?.localizacoes[index].bairro)}
+                              error={formik.touched.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes?.[index].bairro}
                               // @ts-expect-error
-                              helperText={formik.touched.proprietario?.localizacoes[index].bairro && formik.errors.proprietario?.localizacoes[index].bairro}
+                              helperText={formik.touched.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes[index].bairro}
                             />
                           </Grid>
                           <Grid item xs={12} sm={6} lg={6}>
@@ -263,9 +265,9 @@ export const NewAmostra = () => {
                               value={formik.values.proprietario.localizacoes[index].endereco}
                               onChange={formik.handleChange}
                               // @ts-expect-error
-                              error={formik.touched.proprietario?.localizacoes[index].endereco && Boolean(formik.errors.proprietario?.localizacoes[index].endereco)}
+                              error={formik.touched.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes[index].endereco}
                               // @ts-expect-error
-                              helperText={formik.touched.proprietario?.localizacoes[index].endereco && formik.errors.proprietario?.localizacoes[index].endereco}
+                              helperText={formik.touched.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes[index].endereco}
                             />
                           </Grid>
                           <Grid item xs={12} sm={6} lg={3}>
@@ -274,20 +276,20 @@ export const NewAmostra = () => {
                               value={formik.values.proprietario.localizacoes[index].complemento}
                               onChange={formik.handleChange}
                               // @ts-expect-error
-                              error={formik.touched.proprietario?.localizacoes[index].complemento && Boolean(formik.errors.proprietario?.localizacoes[index].complemento)}
+                              error={formik.touched.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes[index].complemento}
                               // @ts-expect-error
-                              helperText={formik.touched.proprietario?.localizacoes[index].complemento && formik.errors.proprietario?.localizacoes[index].complemento}
+                              helperText={formik.touched.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes[index].complemento}
                             />
                           </Grid>
                           <Grid item xs={12} sm={6} lg={3}>
                             <FormControl variant="outlined" fullWidth
                               // @ts-expect-error
-                              error={formik.touched.proprietario?.localizacoes[index].area && Boolean(formik.errors.proprietario?.localizacoes[index].area)}
+                              error={formik.touched.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes?.[index].area}
                             >
-                              <InputLabel id="proprietario.localizacoes[index].areaLabel">Área *</InputLabel>
+                              <InputLabel id={`areaLabel${index}`}>Área *</InputLabel>
                               <Select
                                 required
-                                labelId="proprietario.localizacoes[index].areaLabel"
+                                labelId={`areaLabel${index}`}
                                 name={`proprietario.localizacoes.${index}.area`}
                                 value={formik.values.proprietario?.localizacoes[index].area}
                                 onChange={formik.handleChange}
@@ -298,7 +300,7 @@ export const NewAmostra = () => {
                               </Select>
                               <FormHelperText>{
                                 // @ts-expect-error
-                                formik.touched.proprietario?.localizacoes[index].area && formik.errors.proprietario?.localizacoes[index].area
+                                formik.touched.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes?.[index].area
                               }</FormHelperText>
                             </FormControl>
                           </Grid>
@@ -308,9 +310,9 @@ export const NewAmostra = () => {
                               value={formik.values.proprietario.localizacoes[index].latitude}
                               onChange={formik.handleChange}
                               // @ts-expect-error
-                              error={formik.touched.proprietario?.localizacoes[index].latitude && Boolean(formik.errors.proprietario?.localizacoes[index].latitude)}
+                              error={formik.touched.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes[index].latitude}
                               // @ts-expect-error
-                              helperText={formik.touched.proprietario?.localizacoes[index].latitude && formik.errors.proprietario?.localizacoes[index].latitude}
+                              helperText={formik.touched.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes[index].latitude}
                             />
                           </Grid>
                           <Grid item xs={12} sm={6} lg={3}>
@@ -319,9 +321,9 @@ export const NewAmostra = () => {
                               value={formik.values.proprietario.localizacoes[index].longitude}
                               onChange={formik.handleChange}
                               // @ts-expect-error
-                              error={formik.touched.proprietario?.localizacoes[index].longitude && Boolean(formik.errors.proprietario?.localizacoes[index].longitude)}
+                              error={formik.touched.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes[index].longitude}
                               // @ts-expect-error
-                              helperText={formik.touched.proprietario?.localizacoes[index].longitude && formik.errors.proprietario?.localizacoes[index].longitude}
+                              helperText={formik.touched.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes?.[index] && formik.errors.proprietario?.localizacoes[index].longitude}
                             />
                           </Grid>
                         </React.Fragment>
@@ -401,7 +403,7 @@ export const NewAmostra = () => {
                         <Typography component="h1" variant="h6">
                           Dados de Sintomas
                           &nbsp;&nbsp;
-                          <IconButton color="secondary" onClick={() => push({})}>
+                          <IconButton color="secondary" onClick={() => push({ intensidade: 0 })}>
                             <Add />
                           </IconButton>
                           &nbsp;&nbsp;
@@ -413,10 +415,7 @@ export const NewAmostra = () => {
                       {formik.values.sintomas.map((jump, index) => (
                         <React.Fragment key={index}>
                           <Grid item xs={12} sm={6} lg={6}>
-                            <TextField variant="outlined" required fullWidth label="Nome"
-                              name={`sintomas.${index}.nome`}
-                              value={formik.values.sintomas[index].nome}
-                              onChange={formik.handleChange}
+                            <Field name={`sintomas.${index}.nome`} as="TextField" variant="outlined" required fullWidth label="Nome"
                               error={(formik.touched.sintomas && formik.touched.sintomas[index].nome) && Boolean(formik.touched.sintomas && formik.touched.sintomas[index].nome)}
                               helperText={(formik.touched.sintomas && formik.touched.sintomas[index].nome) && Boolean(formik.touched.sintomas && formik.touched.sintomas[index].nome)}
                             />
