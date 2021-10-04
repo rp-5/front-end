@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { Field, FieldArray, FormikProvider, useFormik } from 'formik';
+import { FieldArray, FormikProvider, useFormik } from 'formik';
 import Button from '@material-ui/core/Button';
 import styles from './Amostra.module.css'
 import { TextField, Container, CssBaseline, Avatar, Typography, Grid, ThemeProvider, Checkbox, FormControlLabel, FormLabel, RadioGroup, Radio, FormHelperText, FormControl, InputLabel, Select, MenuItem, IconButton } from '@material-ui/core';
@@ -18,8 +18,11 @@ export const NewAmostra = () => {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onReset: (values) => {
       console.log(JSON.stringify(values, null, 2))
+    },
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2))
     },
   });
 
@@ -56,9 +59,9 @@ export const NewAmostra = () => {
                     value={formik.values.proprietario?.caes[0].nome}
                     onChange={formik.handleChange}
                     //@ts-expect-error
-                    error={formik.touched.proprietario?.caes[0] && Boolean(formik.errors.proprietario?.caes[0]?.nome)}
+                    error={formik.touched.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0].nome}
                     //@ts-expect-error
-                    helperText={formik.touched.proprietario?.caes[0].nome && formik.errors.proprietario?.caes[0]?.nome}
+                    helperText={formik.touched.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0].nome}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -66,9 +69,9 @@ export const NewAmostra = () => {
                     value={formik.values.proprietario?.caes[0].raca}
                     onChange={formik.handleChange}
                     //@ts-expect-error
-                    error={formik.touched.proprietario?.caes[0].raca && Boolean(formik.errors.proprietario?.caes[0].raca)}
+                    error={formik.touched.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0].raca}
                     //@ts-expect-error
-                    helperText={formik.touched.proprietario?.caes[0].raca && formik.errors.proprietario?.caes[0].raca}
+                    helperText={formik.touched.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0].raca}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
@@ -76,15 +79,15 @@ export const NewAmostra = () => {
                     value={formik.values.proprietario?.caes[0].idade}
                     onChange={formik.handleChange}
                     //@ts-expect-error
-                    error={formik.touched.proprietario?.caes[0].idade && Boolean(formik.errors.proprietario?.caes[0].idade)}
+                    error={formik.touched.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0].idade}
                     //@ts-expect-error
-                    helperText={formik.touched.proprietario?.caes[0].idade && formik.errors.proprietario?.caes[0].idade}
+                    helperText={formik.touched.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0].idade}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
                   <FormControl component="fieldset"
                     //@ts-expect-error
-                    error={formik.touched.proprietario?.caes[0].sexo && Boolean(formik.errors.proprietario?.caes[0].sexo)}
+                    error={formik.touched.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0].sexo}
                   >
                     <FormLabel component="legend">Gênero</FormLabel>
                     <RadioGroup row aria-label="gender" name="proprietario.caes[0].sexo" value={formik.values.proprietario?.caes[0].sexo}
@@ -94,15 +97,12 @@ export const NewAmostra = () => {
                     </RadioGroup>
                     <FormHelperText>{
                       //@ts-expect-error
-                      formik.touched.proprietario?.caes[0].sexo && formik.errors.proprietario?.caes[0].sexo
+                      formik.touched.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0].sexo
                     }</FormHelperText>
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                  <FormControl component="fieldset"
-                    //@ts-expect-error
-                    error={formik.touched.proprietario?.caes[0].vacina && Boolean(formik.errors.proprietario?.caes[0].vacina)}
-                  >
+                  <FormControl component="fieldset">
                     <FormLabel component="legend">É vacinado?</FormLabel>
                     <FormControlLabel
                       control={
@@ -117,10 +117,7 @@ export const NewAmostra = () => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                  <FormControl component="fieldset"
-                    //@ts-expect-error
-                    error={formik.touched.proprietario?.caes[0].usaColeira && Boolean(formik.errors.proprietario?.caes[0].usaColeira)}
-                  >
+                  <FormControl component="fieldset">
                     <FormLabel component="legend">Usa coleira para mosquito palha?</FormLabel>
                     <FormControlLabel
                       control={
@@ -139,15 +136,15 @@ export const NewAmostra = () => {
                     value={formik.values.proprietario?.caes[0].cor}
                     onChange={formik.handleChange}
                     //@ts-expect-error
-                    error={formik.touched.proprietario?.caes[0].cor && Boolean(formik.errors.proprietario?.caes[0].cor)}
+                    error={formik.touched.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0].cor}
                     //@ts-expect-error
-                    helperText={formik.touched.proprietario?.caes[0].cor && formik.errors.proprietario?.caes[0].cor}
+                    helperText={formik.touched.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0].cor}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
                   <FormControl variant="outlined" fullWidth
                     // @ts-expect-error
-                    error={formik.touched.proprietario?.caes[0].pelo && Boolean(formik.errors.proprietario?.caes[0].pelo)}
+                    error={formik.touched.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0].pelo}
                   >
                     <InputLabel id="proprietario.caes[0].peloLabel">Tipo de Pelo *</InputLabel>
                     <Select
@@ -164,14 +161,14 @@ export const NewAmostra = () => {
                     </Select>
                     <FormHelperText>{
                       // @ts-expect-error
-                      formik.touched.proprietario?.caes[0].pelo && formik.errors.proprietario?.caes[0].pelo
+                      formik.touched.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0].pelo
                     }</FormHelperText>
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
                   <FormControl variant="outlined" fullWidth
                     // @ts-expect-error
-                    error={formik.touched.proprietario?.caes[0].ambiente && Boolean(formik.errors.proprietario?.caes[0].ambiente)}
+                    error={formik.touched.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0].ambiente}
                   >
                     <InputLabel id="proprietario.caes[0].ambienteLabel">Ambiente da casa *</InputLabel>
                     <Select
@@ -187,15 +184,12 @@ export const NewAmostra = () => {
                     </Select>
                     <FormHelperText>{
                       // @ts-expect-error
-                      formik.touched.proprietario?.caes[0].ambiente && formik.errors.proprietario?.caes[0].ambiente
+                      formik.touched.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0] && formik.errors.proprietario?.caes?.[0].ambiente
                     }</FormHelperText>
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                  <FormControl component="fieldset"
-                    // @ts-expect-error
-                    error={formik.touched.proprietario?.caes[0].temContato && Boolean(formik.errors.proprietario?.caes[0].temContato)}
-                  >
+                  <FormControl component="fieldset">
                     <FormLabel component="legend">Possui contato com outros animais?</FormLabel>
                     <FormControlLabel
                       control={
@@ -348,11 +342,13 @@ export const NewAmostra = () => {
                 <Grid item xs={12} sm={6} lg={3}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <DatePicker autoOk variant="inline" format="dd/MM/yyyy" disableFuture fullWidth name="amostra.data" label="Data de amostragem"
-                      error={formik.touched.amostra?.data && Boolean(formik.errors.amostra?.data)}
+                      // @ts-expect-error
+                      error={formik.touched.amostra?.data && formik.errors.amostra?.data}
                       helperText={formik.touched.amostra?.data && formik.errors.amostra?.data}
                       inputVariant="outlined"
-                      value={formik.values.amostra?.data}
+                      value={formik.values.amostra?.data === '' ? null : formik.values.amostra?.data}
                       onChange={(value) => {
+                        console.log(formik.values.amostra?.data)
                         formik.handleChange(value?.toISOString())
                         formik.setFieldValue('amostra.data', value)
                       }}
@@ -389,6 +385,15 @@ export const NewAmostra = () => {
                     />
                   </FormControl>
                 </Grid>
+                <Grid item xs={12} sm={6} lg={3}>
+                  <TextField variant="outlined" fullWidth label="Ação a ser tomada"
+                    name='acao.nome'
+                    value={formik.values.acao?.nome}
+                    onChange={formik.handleChange}
+                    error={formik.touched.acao?.nome && Boolean(formik.errors.acao?.nome)}
+                    helperText={formik.touched.acao?.nome && formik.errors.acao?.nome}
+                  />
+                </Grid>
                 <FormikProvider value={formik}>
                   <FieldArray name="sintomas" render={({ push, pop }) => (
                     <>
@@ -409,6 +414,8 @@ export const NewAmostra = () => {
                         <React.Fragment key={index}>
                           <Grid item xs={12} sm={6} lg={6}>
                             <TextField variant="outlined" required fullWidth label="Nome" name={`sintomas.${index}.nome`}
+                              value={formik.values.sintomas[index].nome}
+                              onChange={formik.handleChange}
                               // @ts-expect-error
                               error={formik.touched.sintomas?.[index] && formik.errors.sintomas?.[index] && formik.errors.sintomas?.[index].nome}
                               // @ts-expect-error
@@ -419,21 +426,21 @@ export const NewAmostra = () => {
                             <FormControl variant="outlined" fullWidth
                               // @ts-expect-error
                               error={formik.touched.sintomas?.[index] && formik.errors.sintomas?.[index] && formik.errors.sintomas?.[index].intensidade}>
-                              <InputLabel id="sintIntensityLabel">Intensidade</InputLabel>
+                              <InputLabel id={`intensidade${index}`}>Intensidade</InputLabel>
                               <Select
                                 required
-                                labelId="sintIntensityLabel"
-                                name="sintomas.intensidade"
+                                labelId={`intensidade${index}`}
+                                name={`sintomas[${index}].intensidade`}
                                 value={formik.values.sintomas[index].intensidade}
                                 onChange={formik.handleChange}
                                 label="Intensidade"
                               >
-                                <MenuItem value={'0'}>Não se aplica</MenuItem>
-                                <MenuItem value={'1'}>1</MenuItem>
-                                <MenuItem value={'2'}>2</MenuItem>
-                                <MenuItem value={'3'}>3</MenuItem>
-                                <MenuItem value={'5'}>5</MenuItem>
-                                <MenuItem value={'6'}>6</MenuItem>
+                                <MenuItem value={0}>Não se aplica</MenuItem>
+                                <MenuItem value={1}>1</MenuItem>
+                                <MenuItem value={2}>2</MenuItem>
+                                <MenuItem value={3}>3</MenuItem>
+                                <MenuItem value={5}>5</MenuItem>
+                                <MenuItem value={6}>6</MenuItem>
                               </Select>
                               <FormHelperText>{
                                 // @ts-expect-error
@@ -476,16 +483,16 @@ export const NewAmostra = () => {
                           </Grid>
                           <Grid item xs={12} sm={6} lg={3}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                              <DatePicker autoOk fullWidth variant="inline" format="dd/MM/yyyy" disableFuture name="exames.data" label="Data do exame"
+                              <DatePicker autoOk fullWidth variant="inline" format="dd/MM/yyyy" disableFuture name={`exames[${index}].data`} label="Data do exame"
                                 // @ts-expect-error
                                 error={formik.touched.exames?.[index] && formik.errors.exames?.[index] && formik.errors.exames?.[index].data}
                                 // @ts-expect-error
                                 helperText={formik.touched.exames?.[index] && formik.errors.exames?.[index] && formik.errors.exames?.[index].data}
                                 inputVariant="outlined"
-                                value={formik.values.exames[index].data}
+                                value={formik.values.exames[index].data ?? null}
                                 onChange={(value) => {
                                   formik.handleChange(value?.toISOString())
-                                  formik.setFieldValue('exames.data', value)
+                                  formik.setFieldValue(`exames[${index}].data`, value)
                                 }}
                               />
                             </MuiPickersUtilsProvider>
