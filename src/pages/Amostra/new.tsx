@@ -347,14 +347,7 @@ export const NewAmostra = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <DatePicker
-                      autoOk
-                      variant="inline"
-                      format="dd/MM/yyyy"
-                      disableFuture
-                      fullWidth
-                      name="amostra.data"
-                      label="Data de amostragem"
+                    <DatePicker autoOk variant="inline" format="dd/MM/yyyy" disableFuture fullWidth name="amostra.data" label="Data de amostragem"
                       error={formik.touched.amostra?.data && Boolean(formik.errors.amostra?.data)}
                       helperText={formik.touched.amostra?.data && formik.errors.amostra?.data}
                       inputVariant="outlined"
@@ -415,13 +408,17 @@ export const NewAmostra = () => {
                       {formik.values.sintomas.map((jump, index) => (
                         <React.Fragment key={index}>
                           <Grid item xs={12} sm={6} lg={6}>
-                            <Field name={`sintomas.${index}.nome`} as="TextField" variant="outlined" required fullWidth label="Nome"
-                              error={(formik.touched.sintomas && formik.touched.sintomas[index].nome) && Boolean(formik.touched.sintomas && formik.touched.sintomas[index].nome)}
-                              helperText={(formik.touched.sintomas && formik.touched.sintomas[index].nome) && Boolean(formik.touched.sintomas && formik.touched.sintomas[index].nome)}
+                            <TextField variant="outlined" required fullWidth label="Nome" name={`sintomas.${index}.nome`}
+                              // @ts-expect-error
+                              error={formik.touched.sintomas?.[index] && formik.errors.sintomas?.[index] && formik.errors.sintomas?.[index].nome}
+                              // @ts-expect-error
+                              helperText={formik.touched.sintomas?.[index] && formik.errors.sintomas?.[index] && formik.errors.sintomas?.[index].nome}
                             />
                           </Grid>
                           <Grid item xs={12} sm={6} lg={3}>
-                            <FormControl variant="outlined" fullWidth error={(formik.touched.sintomas && formik.touched.sintomas[index].intensidade) && Boolean(formik.touched.sintomas && formik.touched.sintomas[index].intensidade)}>
+                            <FormControl variant="outlined" fullWidth
+                              // @ts-expect-error
+                              error={formik.touched.sintomas?.[index] && formik.errors.sintomas?.[index] && formik.errors.sintomas?.[index].intensidade}>
                               <InputLabel id="sintIntensityLabel">Intensidade</InputLabel>
                               <Select
                                 required
@@ -438,7 +435,10 @@ export const NewAmostra = () => {
                                 <MenuItem value={'5'}>5</MenuItem>
                                 <MenuItem value={'6'}>6</MenuItem>
                               </Select>
-                              <FormHelperText>{(formik.touched.sintomas && formik.touched.sintomas[index].intensidade) && Boolean(formik.touched.sintomas && formik.touched.sintomas[index].intensidade)}</FormHelperText>
+                              <FormHelperText>{
+                                // @ts-expect-error
+                                formik.touched.sintomas?.[index] && formik.errors.sintomas?.[index] && formik.errors.sintomas?.[index].intensidade
+                              }</FormHelperText>
                             </FormControl>
                           </Grid>
                         </React.Fragment>
@@ -465,26 +465,22 @@ export const NewAmostra = () => {
                       {formik.values.exames.map((jump, index) => (
                         <React.Fragment key={index}>
                           <Grid item xs={12} sm={6} lg={6}>
-                            <TextField variant="outlined" required fullWidth label="Nome"
-                              name={`exames.${index}.nome`}
+                            <TextField variant="outlined" required fullWidth label="Nome" name={`exames.${index}.nome`}
                               value={formik.values.exames[index].nome}
                               onChange={formik.handleChange}
-                              error={(formik.touched.exames && formik.touched.exames[index].nome) && Boolean(formik.touched.exames && formik.touched.exames[index].nome)}
-                              helperText={(formik.touched.exames && formik.touched.exames[index].nome) && Boolean(formik.touched.exames && formik.touched.exames[index].nome)}
+                              // @ts-expect-error
+                              error={formik.touched.exames?.[index] && formik.errors.exames?.[index] && formik.errors.exames?.[index].nome}
+                              // @ts-expect-error
+                              helperText={formik.touched.exames?.[index] && formik.errors.exames?.[index] && formik.errors.exames?.[index].nome}
                             />
                           </Grid>
                           <Grid item xs={12} sm={6} lg={3}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                              <DatePicker
-                                autoOk
-                                fullWidth
-                                variant="inline"
-                                format="dd/MM/yyyy"
-                                disableFuture
-                                name="exames.data"
-                                label="Data do exame"
-                                error={(formik.touched.exames && formik.touched.exames[index].nome) && Boolean(formik.touched.exames && formik.touched.exames[index].nome)}
-                                helperText={(formik.touched.exames && formik.touched.exames[index].nome) && Boolean(formik.touched.exames && formik.touched.exames[index].nome)}
+                              <DatePicker autoOk fullWidth variant="inline" format="dd/MM/yyyy" disableFuture name="exames.data" label="Data do exame"
+                                // @ts-expect-error
+                                error={formik.touched.exames?.[index] && formik.errors.exames?.[index] && formik.errors.exames?.[index].data}
+                                // @ts-expect-error
+                                helperText={formik.touched.exames?.[index] && formik.errors.exames?.[index] && formik.errors.exames?.[index].data}
                                 inputVariant="outlined"
                                 value={formik.values.exames[index].data}
                                 onChange={(value) => {
@@ -495,12 +491,13 @@ export const NewAmostra = () => {
                             </MuiPickersUtilsProvider>
                           </Grid>
                           <Grid item xs={12} sm={6} lg={3}>
-                            <TextField variant="outlined" required fullWidth label="Resultado"
-                              name={`exames.${index}.resultado`}
+                            <TextField variant="outlined" required fullWidth label="Resultado" name={`exames.${index}.resultado`}
                               value={formik.values.exames[index].resultado}
                               onChange={formik.handleChange}
-                              error={(formik.touched.exames && formik.touched.exames[index].resultado) && Boolean(formik.touched.exames && formik.touched.exames[index].resultado)}
-                              helperText={(formik.touched.exames && formik.touched.exames[index].resultado) && Boolean(formik.touched.exames && formik.touched.exames[index].resultado)}
+                              // @ts-expect-error
+                              error={formik.touched.exames?.[index] && formik.errors.exames?.[index] && formik.errors.exames?.[index].resultado}
+                              // @ts-expect-error
+                              helperText={formik.touched.exames?.[index] && formik.errors.exames?.[index] && formik.errors.exames?.[index].resultado}
                             />
                           </Grid>
                         </React.Fragment>
