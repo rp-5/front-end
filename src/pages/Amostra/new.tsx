@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { DatePicker, KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
 import Button from '@material-ui/core/Button';
 import styles from './Amostra.module.css'
 import { TextField, Container, CssBaseline, Avatar, Typography, Grid, ThemeProvider, Checkbox, FormControlLabel, FormLabel, RadioGroup, Radio, FormHelperText, FormControl, InputLabel, Select, MenuItem, IconButton } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { theme } from '../../Theme';
-import { Add } from '@material-ui/icons';
+import { Add, Remove } from '@material-ui/icons';
 import { validationSchema } from './schema';
 import { initialValues } from './formik';
 
@@ -69,7 +71,7 @@ export const NewAmostra = () => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                  <TextField type="number" variant="outlined" required fullWidth label="Idade" name="proprietario?.caes[0].idade"
+                  <TextField type="number" variant="outlined" required fullWidth label="Idade" name="proprietario.caes[0].idade"
                     value={formik.values.proprietario?.caes[0].idade}
                     onChange={formik.handleChange}
                     //@ts-expect-error
@@ -84,7 +86,7 @@ export const NewAmostra = () => {
                     error={formik.touched.proprietario?.caes[0].sexo && Boolean(formik.errors.proprietario?.caes[0].sexo)}
                   >
                     <FormLabel component="legend">Gênero</FormLabel>
-                    <RadioGroup row aria-label="gender" name="proprietario?.caes[0].sexo" value={formik.values.proprietario?.caes[0].sexo}
+                    <RadioGroup row aria-label="gender" name="proprietario.caes[0].sexo" value={formik.values.proprietario?.caes[0].sexo}
                       onChange={formik.handleChange}>
                       <FormControlLabel value="F" control={<Radio />} label="Fêmea" />
                       <FormControlLabel value="M" control={<Radio />} label="Macho" />
@@ -105,7 +107,7 @@ export const NewAmostra = () => {
                       control={
                         <Checkbox
                           onChange={formik.handleChange}
-                          name="proprietario?.caes[0].vacina"
+                          name="proprietario.caes[0].vacina"
                           color="primary"
                         />
                       }
@@ -123,7 +125,7 @@ export const NewAmostra = () => {
                       control={
                         <Checkbox
                           onChange={formik.handleChange}
-                          name="proprietario?.caes[0].usaColeira"
+                          name="proprietario.caes[0].usaColeira"
                           color="primary"
                         />
                       }
@@ -132,7 +134,7 @@ export const NewAmostra = () => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                  <TextField variant="outlined" required fullWidth label="Cor" name="proprietario?.caes[0].cor"
+                  <TextField variant="outlined" required fullWidth label="Cor" name="proprietario.caes[0].cor"
                     value={formik.values.proprietario?.caes[0].cor}
                     onChange={formik.handleChange}
                     //@ts-expect-error
@@ -146,11 +148,11 @@ export const NewAmostra = () => {
                     // @ts-expect-error
                     error={formik.touched.proprietario?.caes[0].pelo && Boolean(formik.errors.proprietario?.caes[0].pelo)}
                   >
-                    <InputLabel id="proprietario?.caes[0].peloLabel">Tipo de Pelo *</InputLabel>
+                    <InputLabel id="proprietario.caes[0].peloLabel">Tipo de Pelo *</InputLabel>
                     <Select
                       required
-                      labelId="proprietario?.caes[0].peloLabel"
-                      name="proprietario?.caes[0].pelo"
+                      labelId="proprietario.caes[0].peloLabel"
+                      name="proprietario.caes[0].pelo"
                       value={formik.values.proprietario?.caes[0].pelo}
                       onChange={formik.handleChange}
                       label="Tipo de Pelo"
@@ -170,11 +172,11 @@ export const NewAmostra = () => {
                     // @ts-expect-error
                     error={formik.touched.proprietario?.caes[0].ambiente && Boolean(formik.errors.proprietario?.caes[0].ambiente)}
                   >
-                    <InputLabel id="proprietario?.caes[0].ambienteLabel">Ambiente da casa *</InputLabel>
+                    <InputLabel id="proprietario.caes[0].ambienteLabel">Ambiente da casa *</InputLabel>
                     <Select
                       required
-                      labelId="proprietario?.caes[0].ambienteLabel"
-                      name="proprietario?.caes[0].ambiente"
+                      labelId="proprietario.caes[0].ambienteLabel"
+                      name="proprietario.caes[0].ambiente"
                       value={formik.values.proprietario?.caes[0].ambiente}
                       onChange={formik.handleChange}
                       label="Ambiente da casa *"
@@ -198,7 +200,7 @@ export const NewAmostra = () => {
                       control={
                         <Checkbox
                           onChange={formik.handleChange}
-                          name="proprietario?.caes[0].temContato"
+                          name="proprietario.caes[0].temContato"
                           color="primary"
                         />
                       }
@@ -228,13 +230,18 @@ export const NewAmostra = () => {
                   />
                 </Grid>
                 <FormikProvider value={formik}>
-                  <FieldArray name="proprietario.localizacoes" render={({ push, remove }) => (
+                  <FieldArray name="proprietario.localizacoes" render={({ push, pop }) => (
                     <>
                       <Grid item xs={12} sm={12}>
                         <Typography component="h1" variant="h6">
                           Endereço do Proprietário
+                          &nbsp;&nbsp;
                           <IconButton color="secondary" onClick={() => push({ latitude: lat, longitude: long })}>
                             <Add />
+                          </IconButton>
+                          &nbsp;&nbsp;
+                          <IconButton color="secondary" onClick={() => pop()}>
+                            <Remove />
                           </IconButton>
                         </Typography>
                       </Grid>
@@ -278,10 +285,10 @@ export const NewAmostra = () => {
                               // @ts-expect-error
                               error={formik.touched.proprietario?.localizacoes[index].area && Boolean(formik.errors.proprietario?.localizacoes[index].area)}
                             >
-                              <InputLabel id="proprietario?.localizacoes[index].areaLabel">Área *</InputLabel>
+                              <InputLabel id="proprietario.localizacoes[index].areaLabel">Área *</InputLabel>
                               <Select
                                 required
-                                labelId="proprietario?.localizacoes[index].areaLabel"
+                                labelId="proprietario.localizacoes[index].areaLabel"
                                 name={`proprietario.localizacoes.${index}.area`}
                                 value={formik.values.proprietario?.localizacoes[index].area}
                                 onChange={formik.handleChange}
@@ -318,6 +325,187 @@ export const NewAmostra = () => {
                               helperText={formik.touched.proprietario?.localizacoes[index].longitude && formik.errors.proprietario?.localizacoes[index].longitude}
                             />
                           </Grid>
+                        </React.Fragment>
+                      ))}
+                    </>
+                  )} />
+                </FormikProvider>
+                <Grid item xs={12} sm={12}>
+                  <Typography component="h1" variant="h6">
+                    Dados da amostra
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6} lg={3}>
+                  <TextField variant="outlined" fullWidth label="Número da amostra"
+                    name='amostra.numero'
+                    value={formik.values.amostra?.numero}
+                    onChange={formik.handleChange}
+                    error={formik.touched.amostra?.numero && Boolean(formik.errors.amostra?.numero)}
+                    helperText={formik.touched.amostra?.numero && formik.errors.amostra?.numero}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} lg={3}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <DatePicker
+                      autoOk
+                      variant="inline"
+                      format="dd/MM/yyyy"
+                      disableFuture
+                      fullWidth
+                      name="amostra.data"
+                      label="Data de amostragem"
+                      error={formik.touched.amostra?.data && Boolean(formik.errors.amostra?.data)}
+                      helperText={formik.touched.amostra?.data && formik.errors.amostra?.data}
+                      inputVariant="outlined"
+                      value={formik.values.amostra?.data}
+                      onChange={(value) => {
+                        formik.handleChange(value?.toISOString())
+                        formik.setFieldValue('amostra.data', value)
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                </Grid>
+                <Grid item xs={12} sm={6} lg={3}>
+                  <FormControl component="fieldset" error={formik.touched.amostra?.morreu && Boolean(formik.errors.amostra?.morreu)}>
+                    <FormLabel component="legend">O cão morreu?</FormLabel>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          onChange={formik.handleChange}
+                          name="amostra.morreu"
+                          color="primary"
+                        />
+                      }
+                      label="Sim"
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} lg={3}>
+                  <FormControl component="fieldset" error={formik.touched.amostra?.lvc && Boolean(formik.errors.amostra?.lvc)}>
+                    <FormLabel component="legend">O cão está com LVC?</FormLabel>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          onChange={formik.handleChange}
+                          name="amostra.lvc"
+                          color="primary"
+                        />
+                      }
+                      label="Sim"
+                    />
+                  </FormControl>
+                </Grid>
+                <FormikProvider value={formik}>
+                  <FieldArray name="sintomas" render={({ push, pop }) => (
+                    <>
+                      <Grid item xs={12} sm={12}>
+                        <Typography component="h1" variant="h6">
+                          Dados de Sintomas
+                          &nbsp;&nbsp;
+                          <IconButton color="secondary" onClick={() => push({})}>
+                            <Add />
+                          </IconButton>
+                          &nbsp;&nbsp;
+                          <IconButton color="secondary" onClick={() => pop()}>
+                            <Remove />
+                          </IconButton>
+                        </Typography>
+                      </Grid>
+                      {formik.values.sintomas.map((jump, index) => (
+                        <React.Fragment key={index}>
+                          <Grid item xs={12} sm={6} lg={6}>
+                            <TextField variant="outlined" required fullWidth label="Nome"
+                              name={`sintomas.${index}.nome`}
+                              value={formik.values.sintomas[index].nome}
+                              onChange={formik.handleChange}
+                              error={(formik.touched.sintomas && formik.touched.sintomas[index].nome) && Boolean(formik.touched.sintomas && formik.touched.sintomas[index].nome)}
+                              helperText={(formik.touched.sintomas && formik.touched.sintomas[index].nome) && Boolean(formik.touched.sintomas && formik.touched.sintomas[index].nome)}
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={6} lg={3}>
+                            <FormControl variant="outlined" fullWidth error={(formik.touched.sintomas && formik.touched.sintomas[index].intensidade) && Boolean(formik.touched.sintomas && formik.touched.sintomas[index].intensidade)}>
+                              <InputLabel id="sintIntensityLabel">Intensidade</InputLabel>
+                              <Select
+                                required
+                                labelId="sintIntensityLabel"
+                                name="sintomas.intensidade"
+                                value={formik.values.sintomas[index].intensidade}
+                                onChange={formik.handleChange}
+                                label="Intensidade"
+                              >
+                                <MenuItem value={'0'}>Não se aplica</MenuItem>
+                                <MenuItem value={'1'}>1</MenuItem>
+                                <MenuItem value={'2'}>2</MenuItem>
+                                <MenuItem value={'3'}>3</MenuItem>
+                                <MenuItem value={'5'}>5</MenuItem>
+                                <MenuItem value={'6'}>6</MenuItem>
+                              </Select>
+                              <FormHelperText>{(formik.touched.sintomas && formik.touched.sintomas[index].intensidade) && Boolean(formik.touched.sintomas && formik.touched.sintomas[index].intensidade)}</FormHelperText>
+                            </FormControl>
+                          </Grid>
+                        </React.Fragment>
+                      ))}
+                    </>
+                  )} />
+                </FormikProvider>
+                <FormikProvider value={formik}>
+                  <FieldArray name="exames" render={({ push, pop }) => (
+                    <>
+                      <Grid item xs={12} sm={12}>
+                        <Typography component="h1" variant="h6">
+                          Dados de Exames
+                          &nbsp;&nbsp;
+                          <IconButton color="secondary" onClick={() => push({})}>
+                            <Add />
+                          </IconButton>
+                          &nbsp;&nbsp;
+                          <IconButton color="secondary" onClick={() => pop()}>
+                            <Remove />
+                          </IconButton>
+                        </Typography>
+                      </Grid>
+                      {formik.values.exames.map((jump, index) => (
+                        <React.Fragment key={index}>
+                          <Grid item xs={12} sm={6} lg={6}>
+                            <TextField variant="outlined" required fullWidth label="Nome"
+                              name={`exames.${index}.nome`}
+                              value={formik.values.exames[index].nome}
+                              onChange={formik.handleChange}
+                              error={(formik.touched.exames && formik.touched.exames[index].nome) && Boolean(formik.touched.exames && formik.touched.exames[index].nome)}
+                              helperText={(formik.touched.exames && formik.touched.exames[index].nome) && Boolean(formik.touched.exames && formik.touched.exames[index].nome)}
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={6} lg={3}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                              <DatePicker
+                                autoOk
+                                fullWidth
+                                variant="inline"
+                                format="dd/MM/yyyy"
+                                disableFuture
+                                name="exames.data"
+                                label="Data do exame"
+                                error={(formik.touched.exames && formik.touched.exames[index].nome) && Boolean(formik.touched.exames && formik.touched.exames[index].nome)}
+                                helperText={(formik.touched.exames && formik.touched.exames[index].nome) && Boolean(formik.touched.exames && formik.touched.exames[index].nome)}
+                                inputVariant="outlined"
+                                value={formik.values.exames[index].data}
+                                onChange={(value) => {
+                                  formik.handleChange(value?.toISOString())
+                                  formik.setFieldValue('exames.data', value)
+                                }}
+                              />
+                            </MuiPickersUtilsProvider>
+                          </Grid>
+                          <Grid item xs={12} sm={6} lg={3}>
+                            <TextField variant="outlined" required fullWidth label="Resultado"
+                              name={`exames.${index}.resultado`}
+                              value={formik.values.exames[index].resultado}
+                              onChange={formik.handleChange}
+                              error={(formik.touched.exames && formik.touched.exames[index].resultado) && Boolean(formik.touched.exames && formik.touched.exames[index].resultado)}
+                              helperText={(formik.touched.exames && formik.touched.exames[index].resultado) && Boolean(formik.touched.exames && formik.touched.exames[index].resultado)}
+                            />
+                          </Grid>
+                          <Grid container sm={12} lg={12}></Grid>
                         </React.Fragment>
                       ))}
                     </>

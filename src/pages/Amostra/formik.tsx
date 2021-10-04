@@ -8,6 +8,7 @@ interface AmostraObject {
 
 interface Amostra {
   numero?: number
+  data: string
   lvc: boolean
   morreu: boolean
 }
@@ -38,7 +39,7 @@ interface Cao {
   nome: string
   raca: string
   sexo: string
-  idade: number
+  idade?: number
   vacina: boolean
   usaColeira: boolean
   cor: string
@@ -59,6 +60,7 @@ interface Localizacao {
 export const initialValues: AmostraObject = {
   amostra: {
     numero: undefined,
+    data: '',
     lvc: false,
     morreu: false
   },
@@ -84,7 +86,7 @@ export const initialValues: AmostraObject = {
     caes: [
       {
         nome: '',
-        idade: 0,
+        idade: undefined,
         raca: '',
         sexo: '',
         usaColeira: false,
