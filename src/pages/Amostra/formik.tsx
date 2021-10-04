@@ -7,15 +7,15 @@ interface AmostraObject {
 }
 
 interface Amostra {
-  numero?: number
-  data: string
+  numero: number | string
+  data?: string
   lvc: boolean
   morreu: boolean
 }
 
 interface Sintoma {
   nome: string
-  intensidade?: number
+  intensidade: number
 }
 
 interface Acao {
@@ -23,9 +23,9 @@ interface Acao {
 }
 
 interface Exame {
-  data: string
+  data?: string
   nome: string
-  resultado?: number
+  resultado: number | string
 }
 
 interface Proprietario {
@@ -39,7 +39,7 @@ interface Cao {
   nome: string
   raca: string
   sexo: string
-  idade?: number
+  idade: number | string
   vacina: boolean
   usaColeira: boolean
   cor: string
@@ -50,16 +50,16 @@ interface Cao {
 
 interface Localizacao {
   endereco: string
-  complemento?: string
+  complemento: string
   bairro: string
   area: string
-  latitude: number
-  longitude: number
+  latitude: number | string
+  longitude: number | string
 }
 
 export const initialValues: AmostraObject = {
   amostra: {
-    numero: undefined,
+    numero: '',
     data: '',
     lvc: false,
     morreu: false
@@ -76,8 +76,7 @@ export const initialValues: AmostraObject = {
   exames: [
     {
       nome: '',
-      data: '',
-      resultado: undefined,
+      resultado: '',
     }
   ],
   proprietario: {
@@ -86,7 +85,7 @@ export const initialValues: AmostraObject = {
     caes: [
       {
         nome: '',
-        idade: undefined,
+        idade: '',
         raca: '',
         sexo: '',
         usaColeira: false,
@@ -102,8 +101,8 @@ export const initialValues: AmostraObject = {
         area: 'Urbana',
         bairro: '',
         endereco: '',
-        latitude: 0,
-        longitude: 0,
+        latitude: '',
+        longitude: '',
         complemento: '',
       }
     ]
