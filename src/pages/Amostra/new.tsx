@@ -25,8 +25,7 @@ export const NewAmostra = () => {
 
   const formik = useFormik({
     initialValues: initialValues,
-    // initialTouched: initialValues,
-    // validationSchema: validationSchema,
+    validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log(JSON.stringify(values, null, 2))
     },
@@ -505,7 +504,6 @@ export const NewAmostra = () => {
                               helperText={(formik.touched.exames && formik.touched.exames[index].resultado) && Boolean(formik.touched.exames && formik.touched.exames[index].resultado)}
                             />
                           </Grid>
-                          <Grid container sm={12} lg={12}></Grid>
                         </React.Fragment>
                       ))}
                     </>

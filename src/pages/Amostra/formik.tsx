@@ -67,7 +67,7 @@ export const initialValues: AmostraObject = {
   sintomas: [
     {
       nome: '',
-      intensidade: undefined,
+      intensidade: 0,
     },
   ],
   acao: {
@@ -99,7 +99,7 @@ export const initialValues: AmostraObject = {
     ],
     localizacoes: [
       {
-        area: '',
+        area: 'Urbana',
         bairro: '',
         endereco: '',
         latitude: 0,
@@ -108,33 +108,4 @@ export const initialValues: AmostraObject = {
       }
     ]
   },
-  // dogName: '',
-  // dogRace: '',
-  // dogGender: '',
-  // dogAge: '',
-  // dogIsVaccinated: '',
-  // dogUsesCollar: '',
-  // dogColor: '',
-  // dogHair: '',
-  // dogEnvironment: '',
-  // dogHasContacts: '',
-  // ownerName: '',
-  // ownerPhone: '',
-  // locations: [],
-  // locationStreet: '',
-  // locationComplement: '',
-  // locationNeighborhood: '',
-  // locationArea: '',
-  // locationLatitude: '',
-  // locationLongitude: '',
-  // sampleN: '',
-  // sampleNumber: '',
-  // sampleDate: '',
-  // sampleLVC: '',
-  // sampleIsDead: '',
-  // sintName: '',
-  // sintIntensity: '',
-  // exameName: '',
-  // exameDate: '',
-  // exameResult: '',
 }
