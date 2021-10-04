@@ -1,5 +1,5 @@
-import React from 'react';
-import { useFormik } from 'formik';
+import React, { useEffect, useState } from 'react';
+import { FieldArray, FormikProvider, useFormik } from 'formik';
 import Button from '@material-ui/core/Button';
 import styles from './Amostra.module.css'
 import { TextField, Container, CssBaseline, Avatar, Typography, Grid, ThemeProvider, Checkbox, FormControlLabel, FormLabel, RadioGroup, Radio, FormHelperText, FormControl, InputLabel, Select, MenuItem, IconButton } from '@material-ui/core';
@@ -10,6 +10,17 @@ import { validationSchema } from './schema';
 import { initialValues } from './formik';
 
 export const NewAmostra = () => {
+  const [lat, setLat] = useState(0);
+  const [long, setLong] = useState(0);
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      setLat(pos.coords.latitude)
+      setLong(pos.coords.longitude)
+      formik.setFieldValue('proprietario.localizacoes[0].latitude', pos.coords.latitude)
+      formik.setFieldValue('proprietario.localizacoes[0].longitude', pos.coords.longitude)
+    })
+  }, [])
+
   const formik = useFormik({
     initialValues: initialValues,
     // initialTouched: initialValues,
@@ -18,22 +29,6 @@ export const NewAmostra = () => {
       console.log(JSON.stringify(values, null, 2))
     },
   });
-
-  const [symptoms, setSymptom] = React.useState([""]);
-  const [exams, setExam] = React.useState([""]);
-  const [locations, setLocation] = React.useState([""]);
-
-  const addSymptom = () => {
-    setSymptom([...symptoms, ""]);
-  };
-
-  const addExam = () => {
-    setExam([...exams, ""]);
-  };
-
-  const addLocation = () => {
-    setLocation([...locations, ""]);
-  };
   return (
     <div className={styles.wrapper}>
       <ThemeProvider theme={theme}>
@@ -94,7 +89,6 @@ export const NewAmostra = () => {
                       <FormControlLabel value="F" control={<Radio />} label="Fêmea" />
                       <FormControlLabel value="M" control={<Radio />} label="Macho" />
                     </RadioGroup>
-                    //@ts-expect-error
                     <FormHelperText>{
                       //@ts-expect-error
                       formik.touched.proprietario?.caes[0].sexo && formik.errors.proprietario?.caes[0].sexo
@@ -218,13 +212,7 @@ export const NewAmostra = () => {
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm={6} lg={6}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="ownerName"
-                    label="Nome"
-                    name="ownerName"
+                  <TextField variant="outlined" required fullWidth label="Nome" name="proprietario.nome"
                     value={formik.values.proprietario.nome}
                     onChange={formik.handleChange}
                     error={formik.touched.proprietario?.nome && Boolean(formik.errors.proprietario?.nome)}
@@ -232,288 +220,109 @@ export const NewAmostra = () => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={6}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="ownerPhone"
-                    label="Telefone"
-                    name="ownerPhone"
-                    value={formik.values.ownerPhone}
+                  <TextField variant="outlined" required fullWidth label="Telefone" name="proprietario.telefone"
+                    value={formik.values.proprietario.telefone}
                     onChange={formik.handleChange}
-                    error={formik.touched.ownerPhone && Boolean(formik.errors.ownerPhone)}
-                    helperText={formik.touched.ownerPhone && formik.errors.ownerPhone}
+                    error={formik.touched.proprietario?.telefone && Boolean(formik.errors.proprietario?.telefone)}
+                    helperText={formik.touched.proprietario?.telefone && formik.errors.proprietario?.telefone}
                   />
                 </Grid>
-                <Grid item xs={12} sm={12}>
-                  <Typography component="h1" variant="h6">
-                    Endereço do Proprietário
-                    <IconButton color="secondary" aria-label="add an alarm" onClick={addLocation}>
-                      <Add />
-                    </IconButton>
-                  </Typography>
-                </Grid>
-                {locations.map((jump, index) => (
-                  <>
-                    <Grid item xs={12} sm={6} lg={6}>
-                      <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="locationNeighborhood"
-                        label="Bairro"
-                        name="locationNeighborhood"
-                        value={formik.values.locationNeighborhood}
-                        onChange={formik.handleChange}
-                        error={formik.touched.locationNeighborhood && Boolean(formik.errors.locationNeighborhood)}
-                        helperText={formik.touched.locationNeighborhood && formik.errors.locationNeighborhood}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={6}>
-                      <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="locationStreet"
-                        label="Rua"
-                        name="locationStreet"
-                        value={formik.values.locationStreet}
-                        onChange={formik.handleChange}
-                        error={formik.touched.locationStreet && Boolean(formik.errors.locationStreet)}
-                        helperText={formik.touched.locationStreet && formik.errors.locationStreet}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={3}>
-                      <TextField
-                        variant="outlined"
-                        fullWidth
-                        id="locationComplement"
-                        label="Complemento"
-                        name="locationComplement"
-                        value={formik.values.locationComplement}
-                        onChange={formik.handleChange}
-                        error={formik.touched.locationComplement && Boolean(formik.errors.locationComplement)}
-                        helperText={formik.touched.locationComplement && formik.errors.locationComplement}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={3}>
-                      <FormControl variant="outlined" fullWidth error={formik.touched.locationArea && Boolean(formik.errors.locationArea)}>
-                        <InputLabel id="locationAreaLabel">Área *</InputLabel>
-                        <Select
-                          required
-                          labelId="locationAreaLabel"
-                          id="locationArea"
-                          name="locationArea"
-                          value={formik.values.locationArea}
-                          onChange={formik.handleChange}
-                          label="Área"
-                        >
-                          <MenuItem value={'Urbana'}>Urbana</MenuItem>
-                          <MenuItem value={'Rural'}>Rural</MenuItem>
-                        </Select>
-                        <FormHelperText>{formik.touched.locationArea && formik.errors.locationArea}</FormHelperText>
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={3}>
-                      <TextField
-                        variant="outlined"
-                        fullWidth
-                        required
-                        id="locationLatitude"
-                        label="Latitude"
-                        name="locationLatitude"
-                        value={formik.values.locationLatitude}
-                        onChange={formik.handleChange}
-                        error={formik.touched.locationLatitude && Boolean(formik.errors.locationLatitude)}
-                        helperText={formik.touched.locationLatitude && formik.errors.locationLatitude}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={3}>
-                      <TextField
-                        variant="outlined"
-                        fullWidth
-                        required
-                        id="locationLongitude"
-                        label="Longitude"
-                        name="locationLongitude"
-                        value={formik.values.locationLongitude}
-                        onChange={formik.handleChange}
-                        error={formik.touched.locationLongitude && Boolean(formik.errors.locationLongitude)}
-                        helperText={formik.touched.locationLongitude && formik.errors.locationLongitude}
-                      />
-                    </Grid>
-                  </>
-                ))}
-                <Grid item xs={12} sm={12}>
-                  <Typography component="h1" variant="h6">
-                    Dados da amostra
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} sm={6} lg={3}>
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    required
-                    id="sampleNumber"
-                    label="Número da amostra"
-                    name="sampleNumber"
-                    value={formik.values.sampleNumber}
-                    onChange={formik.handleChange}
-                    error={formik.touched.sampleNumber && Boolean(formik.errors.sampleNumber)}
-                    helperText={formik.touched.sampleNumber && formik.errors.sampleNumber}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6} lg={3}>
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    required
-                    InputLabelProps={{ shrink: true }}
-                    type="date"
-                    id="sampleDate"
-                    label="Data de amostragem"
-                    name="sampleDate"
-                    value={formik.values.sampleDate}
-                    onChange={formik.handleChange}
-                    error={formik.touched.sampleDate && Boolean(formik.errors.sampleDate)}
-                    helperText={formik.touched.sampleDate && formik.errors.sampleDate}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6} lg={3}>
-                  <FormControl component="fieldset" error={formik.touched.sampleIsDead && Boolean(formik.errors.sampleIsDead)}>
-                    <FormLabel component="legend">O cão morreu?</FormLabel>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          onChange={formik.handleChange}
-                          name="sampleIsDead"
-                          id="sampleIsDead"
-                          color="primary"
-                        />
-                      }
-                      label="Sim"
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={6} lg={3}>
-                  <FormControl component="fieldset" error={formik.touched.sampleLVC && Boolean(formik.errors.sampleLVC)}>
-                    <FormLabel component="legend">O cão está com LVC?</FormLabel>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          onChange={formik.handleChange}
-                          name="sampleLVC"
-                          id="sampleLVC"
-                          color="primary"
-                        />
-                      }
-                      label="Sim"
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={12}>
-                  <Typography component="h1" variant="h6">
-                    Dados de Sintomas
-                    <IconButton color="secondary" aria-label="add an alarm" onClick={addSymptom}>
-                      <Add />
-                    </IconButton>
-                  </Typography>
-                </Grid>
-                {symptoms.map((jump, index) => (
-                  <>
-                    <Grid item xs={12} sm={6} lg={6}>
-                      <TextField
-                        variant="outlined"
-                        fullWidth
-                        id="sintName"
-                        label="Sintoma"
-                        name="sintName"
-                        value={formik.values.sintName}
-                        onChange={formik.handleChange}
-                        error={formik.touched.sintName && Boolean(formik.errors.sintName)}
-                        helperText={formik.touched.sintName && formik.errors.sintName}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={3}>
-                      <FormControl variant="outlined" fullWidth error={formik.touched.sintIntensity && Boolean(formik.errors.sintIntensity)}>
-                        <InputLabel id="sintIntensityLabel">Intensidade</InputLabel>
-                        <Select
-                          required
-                          labelId="sintIntensityLabel"
-                          id="sintIntensity"
-                          name="sintIntensity"
-                          value={formik.values.sintIntensity}
-                          onChange={formik.handleChange}
-                          label="Intensidade"
-                        >
-                          <MenuItem value={'N/A'}>Não se aplica</MenuItem>
-                          <MenuItem value={'1'}>1</MenuItem>
-                          <MenuItem value={'2'}>2</MenuItem>
-                          <MenuItem value={'3'}>3</MenuItem>
-                          <MenuItem value={'5'}>5</MenuItem>
-                          <MenuItem value={'6'}>6</MenuItem>
-                        </Select>
-                        <FormHelperText>{formik.touched.sintIntensity && formik.errors.sintIntensity}</FormHelperText>
-                      </FormControl>
-                    </Grid>
-                    <Grid container sm={12} lg={12}></Grid>
-                  </>
-                ))}
-                <Grid item xs={12} sm={12}>
-                  <Typography component="h1" variant="h6">
-                    Dados de Exames
-                    <IconButton color="secondary" aria-label="add an alarm" onClick={addExam}>
-                      <Add />
-                    </IconButton>
-                  </Typography>
-                </Grid>
-                {exams.map((jump, index) => (
-                  <>
-                    <Grid item xs={12} sm={6} lg={6}>
-                      <TextField
-                        variant="outlined"
-                        fullWidth
-                        id="exameName"
-                        label="Exame"
-                        name="exameName"
-                        value={formik.values.exameName}
-                        onChange={formik.handleChange}
-                        error={formik.touched.exameName && Boolean(formik.errors.exameName)}
-                        helperText={formik.touched.exameName && formik.errors.exameName}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={3}>
-                      <TextField
-                        variant="outlined"
-                        fullWidth
-                        required
-                        InputLabelProps={{ shrink: true }}
-                        type="date"
-                        id="exameDate"
-                        label="Data do exame"
-                        name="exameDate"
-                        value={formik.values.exameDate}
-                        onChange={formik.handleChange}
-                        error={formik.touched.exameDate && Boolean(formik.errors.exameDate)}
-                        helperText={formik.touched.exameDate && formik.errors.exameDate}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={3}>
-                      <TextField
-                        variant="outlined"
-                        fullWidth
-                        id="exameResult"
-                        label="Resultado"
-                        name="exameResult"
-                        value={formik.values.exameResult}
-                        onChange={formik.handleChange}
-                        error={formik.touched.exameResult && Boolean(formik.errors.exameResult)}
-                        helperText={formik.touched.exameResult && formik.errors.exameResult}
-                      />
-                    </Grid>
-                    <Grid container sm={12} lg={12}></Grid>
-                  </>
-                ))}
+                <FormikProvider value={formik}>
+                  <FieldArray name="proprietario.localizacoes" render={({ push, remove }) => (
+                    <>
+                      <Grid item xs={12} sm={12}>
+                        <Typography component="h1" variant="h6">
+                          Endereço do Proprietário
+                          <IconButton color="secondary" onClick={() => push({ latitude: lat, longitude: long })}>
+                            <Add />
+                          </IconButton>
+                        </Typography>
+                      </Grid>
+                      {formik.values.proprietario.localizacoes.map((jump, index) => (
+                        <React.Fragment key={index}>
+                          <Grid item xs={12} sm={6} lg={6}>
+                            <TextField variant="outlined" required fullWidth label="Bairro"
+                              name={`proprietario.localizacoes.${index}.bairro`}
+                              value={formik.values.proprietario.localizacoes[index].bairro}
+                              onChange={formik.handleChange}
+                              // @ts-expect-error
+                              error={formik.touched.proprietario?.localizacoes[index].bairro && Boolean(formik.errors.proprietario?.localizacoes[index].bairro)}
+                              // @ts-expect-error
+                              helperText={formik.touched.proprietario?.localizacoes[index].bairro && formik.errors.proprietario?.localizacoes[index].bairro}
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={6} lg={6}>
+                            <TextField variant="outlined" required fullWidth label="Rua"
+                              name={`proprietario.localizacoes.${index}.endereco`}
+                              value={formik.values.proprietario.localizacoes[index].endereco}
+                              onChange={formik.handleChange}
+                              // @ts-expect-error
+                              error={formik.touched.proprietario?.localizacoes[index].endereco && Boolean(formik.errors.proprietario?.localizacoes[index].endereco)}
+                              // @ts-expect-error
+                              helperText={formik.touched.proprietario?.localizacoes[index].endereco && formik.errors.proprietario?.localizacoes[index].endereco}
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={6} lg={3}>
+                            <TextField variant="outlined" fullWidth label="Complemento"
+                              name={`proprietario.localizacoes.${index}.complemento`}
+                              value={formik.values.proprietario.localizacoes[index].complemento}
+                              onChange={formik.handleChange}
+                              // @ts-expect-error
+                              error={formik.touched.proprietario?.localizacoes[index].complemento && Boolean(formik.errors.proprietario?.localizacoes[index].complemento)}
+                              // @ts-expect-error
+                              helperText={formik.touched.proprietario?.localizacoes[index].complemento && formik.errors.proprietario?.localizacoes[index].complemento}
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={6} lg={3}>
+                            <FormControl variant="outlined" fullWidth
+                              // @ts-expect-error
+                              error={formik.touched.proprietario?.localizacoes[index].area && Boolean(formik.errors.proprietario?.localizacoes[index].area)}
+                            >
+                              <InputLabel id="proprietario?.localizacoes[index].areaLabel">Área *</InputLabel>
+                              <Select
+                                required
+                                labelId="proprietario?.localizacoes[index].areaLabel"
+                                name={`proprietario.localizacoes.${index}.area`}
+                                value={formik.values.proprietario?.localizacoes[index].area}
+                                onChange={formik.handleChange}
+                                label="Área"
+                              >
+                                <MenuItem value={'Urbana'}>Urbana</MenuItem>
+                                <MenuItem value={'Rural'}>Rural</MenuItem>
+                              </Select>
+                              <FormHelperText>{
+                                // @ts-expect-error
+                                formik.touched.proprietario?.localizacoes[index].area && formik.errors.proprietario?.localizacoes[index].area
+                              }</FormHelperText>
+                            </FormControl>
+                          </Grid>
+                          <Grid item xs={12} sm={6} lg={3}>
+                            <TextField variant="outlined" fullWidth label="Latitude"
+                              name={`proprietario.localizacoes.${index}.latitude`}
+                              value={formik.values.proprietario.localizacoes[index].latitude}
+                              onChange={formik.handleChange}
+                              // @ts-expect-error
+                              error={formik.touched.proprietario?.localizacoes[index].latitude && Boolean(formik.errors.proprietario?.localizacoes[index].latitude)}
+                              // @ts-expect-error
+                              helperText={formik.touched.proprietario?.localizacoes[index].latitude && formik.errors.proprietario?.localizacoes[index].latitude}
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={6} lg={3}>
+                            <TextField variant="outlined" fullWidth label="Longitude"
+                              name={`proprietario.localizacoes.${index}.longitude`}
+                              value={formik.values.proprietario.localizacoes[index].longitude}
+                              onChange={formik.handleChange}
+                              // @ts-expect-error
+                              error={formik.touched.proprietario?.localizacoes[index].longitude && Boolean(formik.errors.proprietario?.localizacoes[index].longitude)}
+                              // @ts-expect-error
+                              helperText={formik.touched.proprietario?.localizacoes[index].longitude && formik.errors.proprietario?.localizacoes[index].longitude}
+                            />
+                          </Grid>
+                        </React.Fragment>
+                      ))}
+                    </>
+                  )} />
+                </FormikProvider>
                 <Button
                   type="submit"
                   fullWidth

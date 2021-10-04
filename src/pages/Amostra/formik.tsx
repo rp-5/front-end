@@ -29,6 +29,7 @@ interface Exame {
 
 interface Proprietario {
   nome: string
+  telefone: string
   caes: Cao[]
   localizacoes: Localizacao[]
 }
@@ -79,6 +80,7 @@ export const initialValues: AmostraObject = {
   ],
   proprietario: {
     nome: '',
+    telefone: '',
     caes: [
       {
         nome: '',
@@ -88,6 +90,9 @@ export const initialValues: AmostraObject = {
         usaColeira: false,
         vacina: false,
         cor: '',
+        pelo: '',
+        ambiente: '',
+        temContato: false,
       }
     ],
     localizacoes: [
