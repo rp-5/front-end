@@ -11,6 +11,8 @@ import { Add, ArrowBack, Remove } from '@material-ui/icons';
 import { validationSchema } from './schema';
 import { initialValues } from './formik';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 
 export const NewAmostra = () => {
   const [lat, setLat] = useState(0);
@@ -19,8 +21,27 @@ export const NewAmostra = () => {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2))
+    onSubmit: async (values) => {
+      const api = axios.create({
+        baseURL: "https://crud-service-develop.herokuapp.com/crudService"
+      })
+
+      try {
+        const response = api.post('/salvar/geral', JSON.stringify(values), {
+          headers: { 'Content-Type': 'application/json;' }
+        })
+        await toast.promise(
+          response,
+          {
+            pending: 'Processando...',
+            success: 'Dados enviados!',
+            error: 'Falha ao enviar. Cheque o console para mais detalhes.'
+          }
+        )
+      } catch (error) {
+        console.log(error)
+      }
+      // alert(JSON.stringify(values, null, 2))
     },
   });
 
@@ -36,6 +57,7 @@ export const NewAmostra = () => {
 
   return (
     <div className={styles.wrapper}>
+      <ToastContainer />
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="lg">
           <Link to="/">
