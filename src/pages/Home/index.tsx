@@ -59,6 +59,7 @@ export default function Home() {
           </Button>
         </label>
       </div>
+      <h3 style={{ color: "aliceblue", fontSize: '2rem' }}>Demonstração pipeline</h3>
     </div>
   );
 }
