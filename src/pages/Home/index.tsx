@@ -1,14 +1,13 @@
-import Icon from '@ailibs/feather-react-ts';
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css'
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify';
+import { Button } from '@material-ui/core';
+import { Add, AttachFile } from '@material-ui/icons';
 
 export default function Home() {
-  const [disabledBtn, setDisabledBtn] = useState(false)
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDisabledBtn(true)
     let formData = new FormData()
     if (e.target.files) {
       let file = e.target.files[0]
@@ -37,8 +36,6 @@ export default function Home() {
         )
       } catch (error) {
         console.log(error)
-      } finally {
-        setDisabledBtn(false)
       }
     }
   }
@@ -49,21 +46,17 @@ export default function Home() {
       <h3>PampaCare</h3>
       <div className={styles.cardWrapper}>
         <Link to="/amostra/new">
-          <button className={styles.cardItem}>
-            <div>
-              <Icon name="plus-circle" />
-              <p>Adicionar amostra</p>
-            </div>
-          </button>
+          <Button variant="contained" component="span" startIcon={<Add />}>
+            Nova amostra
+          </Button>
         </Link>
-        <label className={styles.cardItem}>
+        <label htmlFor="upload">
           <div className={styles.hidden}>
-            <input disabled={disabledBtn} type="file" onChange={handleUpload} />
+            <input id="upload" type="file" onChange={handleUpload} />
           </div>
-          <div>
-            <Icon name="file-plus" />
-            <p>Enviar arquivo</p>
-          </div>
+          <Button variant="contained" component="span" startIcon={<AttachFile />}>
+            Enviar arquivo
+          </Button>
         </label>
       </div>
     </div>

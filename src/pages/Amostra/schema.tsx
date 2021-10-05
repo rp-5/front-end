@@ -39,8 +39,8 @@ export const validationSchema = yup.object({
         endereco: yup.string().required('Rua do proprietário é obrigatório'),
         bairro: yup.string().required('Bairro do proprietário é obrigatório'),
         area: yup.string().required('Área do proprietário é obrigatório'),
-        latitude: yup.string().required('Latitude do proprietário é obrigatório'),
-        longitude: yup.string().required('Longitude do proprietário é obrigatório'),
+        latitude: yup.number().typeError('Latitude deve ser um número'),
+        longitude: yup.number().typeError('Longitude deve ser um número'),
       })),
   })
 });

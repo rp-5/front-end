@@ -1,9 +1,8 @@
 .cardWrapper {
-  display: grid;
+  display: flex;
   justify-items: center;
   align-items: center;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
+  gap: 1rem;
 }
 
 .cardItem {
@@ -30,7 +29,6 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 5rem 0 30rem 0;
 }
 
 h3 {
