@@ -1,17 +1,20 @@
 import Icon from '@ailibs/feather-react-ts';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css'
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify';
 
 export default function Home() {
+  const [disabledBtn, setDisabledBtn] = useState(false)
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formData = new FormData()
+    setDisabledBtn(true)
+    let formData = new FormData()
     if (e.target.files) {
-      const file = e.target.files[0]
+      let file = e.target.files[0]
+      e.target.value = ''
       if (file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
-        toast('O formato correto arquivo deve ser .xlsx!', { type: 'error' })
+        toast('O formato correto do arquivo deve ser .xlsx!', { type: 'error' })
         return
       }
       formData.append('file', file, file.name)
@@ -24,7 +27,7 @@ export default function Home() {
         const response = api.post('/upload/new', formData, {
           headers: { 'Content-Type': 'multipart/form-data;' }
         })
-        toast.promise(
+        await toast.promise(
           response,
           {
             pending: 'Processando...',
@@ -33,10 +36,11 @@ export default function Home() {
           }
         )
       } catch (error) {
-        toast('Oops! Algo deu bem errado. Cheque o console para mais detalhes.', { type: 'error' })
+        console.log(error)
+      } finally {
+        setDisabledBtn(false)
       }
     }
-
   }
 
   return (
@@ -54,7 +58,7 @@ export default function Home() {
         </Link>
         <label className={styles.cardItem}>
           <div className={styles.hidden}>
-            <input type="file" onChange={handleUpload} />
+            <input disabled={disabledBtn} type="file" onChange={handleUpload} />
           </div>
           <div>
             <Icon name="file-plus" />
